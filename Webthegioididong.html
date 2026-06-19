@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash Sale TGDD Clone</title>
+  <!-- Link Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    /* ===== PROMO BAR ===== */
+    .promo-bar {
+      background: #FF0000;
+      color: #fff;
+      text-align: center;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background-color: #FFD600; /* vàng TGDD */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #000 !important;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 80px;
+      font-size: 20px;
+    }
+
+    .nav-link {
+      color: #000 !important;
+      font-weight: 600;
+      margin: 0 8px;
+    }
+
+    .nav-link:hover {
+      color: #fff !important;
+      background: #000;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .search-bar {
+      max-width: 400px;
+      border-radius: 25px;
+      overflow: hidden;
+    }
+
+    .search-bar input {
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+    }
+
+    .search-bar button {
+      background: #FFD600;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    /* ===== CATEGORY MENU ===== */
+    .category-nav {
+      background-color: #FFD600;
+      border-bottom: 3px solid #FFC000;
+    }
+
+    .category-nav .nav-link {
+      color: #000 !important;
+      font-weight: 600;
+      padding: 12px 15px !important;
+      font-size: 14px;
+    }
+
+    .category-nav .nav-link:hover {
+      background: rgba(0,0,0,0.1);
+      border-radius: 5px;
+    }
+
+    /* ===== BANNER/SLIDER ===== */
+    .banner-section {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .carousel {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    }
+
+    .carousel-item img {
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+      background: rgba(0,0,0,0.3);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* ===== PROMOTION BOXES ===== */
+    .promo-box {
+      background: linear-gradient(135deg, #FFD600, #FFC000);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      text-align: center;
+      color: #000;
+      font-weight: bold;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .promo-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .promo-box h5 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .promo-box p {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* ===== PRODUCT SECTION ===== */
+    .products-section {
+      background: #fff;
+      padding: 30px 20px;
+      border-radius: 8px;
+      margin: 20px auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      color: #000;
+      border-left: 5px solid #FFD600;
+      padding-left: 15px;
+    }
+
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      border-color: #FFD600;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      background: #f9f9f9;
+      position: relative;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #FF0000;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      min-height: 35px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .price-current {
+      font-size: 18px;
+      font-weight: bold;
+      color: #FF0000;
+    }
+
+    .price-old {
+      font-size: 14px;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    .discount-percent {
+      background: #FF0000;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .stars {
+      color: #FFD600;
+    }
+
+    .product-btn {
+      width: 100%;
+      background: #FFD600;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .product-btn:hover {
+      background: #FFC000;
+      transform: scale(1.02);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 40px 20px;
+      margin-top: 50px;
+    }
+
+    footer h5 {
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: #bbb;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    footer a:hover {
+      color: #FFD600;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #555;
+      margin-top: 30px;
+      padding-top: 20px;
+      text-align: center;
+      color: #999;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    /* ===== BACK TO EXERCISES BUTTON ===== */
+    .back-to-exercises {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: 0.3s;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .back-to-exercises:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-brand {
+        margin-left: 0;
+      }
+
+      .carousel-item img {
+        height: 250px;
+      }
+
+      .product-image {
+        height: 200px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .back-to-exercises {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Thanh khuyến mãi -->
+  <div class="promo-bar">
+    🎁 THỨ TƯ SALE SẬP SÀN GIẢM ĐẾN 50%++ - MUA NGAY!
+  </div>
+
+  <!-- ===== HEADER NAVBAR ===== -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">   
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-store"></i> thegioididong.com
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTGDD">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTGDD">
+        <!-- Search -->
+        <form class="search-bar d-flex mx-auto">
+          <input class="form-control" type="search" placeholder="🔍 Tìm kiếm sản phẩm...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <!-- Links -->
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-map-marker-alt"></i> TP.HCM</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== CATEGORY MENU ===== -->
+  <nav class="navbar navbar-expand-lg category-nav">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Điện thoại</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Laptop</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Phụ kiện</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Smartwatch</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Đồng hồ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Tablet</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Máy cũ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Màn hình</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Sim/Thẻ</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTAINER ===== -->
+  <div class="container-lg">
+    <!-- ===== BANNER SLIDER ===== -->
+    <div class="banner-section">
+      <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 400px; display: flex; align-items: center; justify-content: center; color: white;">
+              <div style="text-align: center;">
+                <h1 style="font-size: 48px; font-weight: bold; margin-bottom: 20px;">🎉 iPhone 15 Pro Max</h1>
+                <p style="font-size: 24px; margin-bottom: 20px;">Giảm đến 5 triệu đồng</p>
+                <button class="btn btn-warning" style="font-size: 18px; padding: 12px 30px;">MUA NGAY</button>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 400px; display: flex; align-items: center; justify-content: center; color: white;">
+              <div style="text-align: center;">
+                <h1 style="font-size: 48px; font-weight: bold; margin-bottom: 20px;">💻 Laptop Gaming</h1>
+                <p style="font-size: 24px; margin-bottom: 20px;">Quà tặng trị giá 10 triệu</p>
+                <button class="btn btn-warning" style="font-size: 18px; padding: 12px 30px;">KHÁM PHÁ</button>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); height: 400px; display: flex; align-items: center; justify-content: center; color: white;">
+              <div style="text-align: center;">
+                <h1 style="font-size: 48px; font-weight: bold; margin-bottom: 20px;">⌚ Apple Watch Series 9</h1>
+                <p style="font-size: 24px; margin-bottom: 20px;">Trả góp 0% lên tới 24 tháng</p>
+                <button class="btn btn-warning" style="font-size: 18px; padding: 12px 30px;">XEM NGAY</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== PROMOTION BOXES ===== -->
+    <div class="row" style="margin: 30px 0;">
+      <div class="col-md-4">
+        <div class="promo-box">
+          <h5>🚚 MIỄN PHÍ VẬN CHUYỂN</h5>
+          <p>Cho đơn hàng trên 500K</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="promo-box">
+          <h5>💳 TRẢ GÓP 0%</h5>
+          <p>Lên tới 24 tháng</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="promo-box">
+          <h5>🔄 ĐỔI TRẢ DỄ DÀNG</h5>
+          <p>30 ngày không lý do</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PRODUCT SECTION ===== -->
+    <div class="products-section">
+      <h2 class="section-title">🔥 SẢN PHẨM BÁN CHẠY</h2>
+
+      <div class="row" id="productContainer">
+        <!-- Sản phẩm sẽ được render từ JavaScript -->
+      </div>
+    </div>
+
+    <!-- ===== FLASH SALE SECTION ===== -->
+    <div class="products-section">
+      <h2 class="section-title">⚡ FLASH SALE HÔM NAY</h2>
+
+      <div class="row" id="flashSaleContainer">
+        <!-- Flash sale sẽ được render từ JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h5>Về Thế Giới Di Động</h5>
+          <a href="#" style="display: block;">Giới thiệu công ty</a>
+          <a href="#" style="display: block;">Tuyên bố bảo mật</a>
+          <a href="#" style="display: block;">Điều khoản dịch vụ</a>
+          <a href="#" style="display: block;">Liên hệ quảng cáo</a>
+        </div>
+        <div class="col-md-3">
+          <h5>Hỗ Trợ Khách Hàng</h5>
+          <a href="#" style="display: block;">Trung tâm trợ giúp</a>
+          <a href="#" style="display: block;">Liên hệ chúng tôi</a>
+          <a href="#" style="display: block;">Gửi góp ý</a>
+          <a href="#" style="display: block;">Tra cứu đơn hàng</a>
+        </div>
+        <div class="col-md-3">
+          <h5>Dành Cho Nhà Bán</h5>
+          <a href="#" style="display: block;">Trở thành người bán</a>
+          <a href="#" style="display: block;">Chính sách người bán</a>
+          <a href="#" style="display: block;">Quảng cáo trên TGDD</a>
+        </div>
+        <div class="col-md-3">
+          <h5>Kết Nối Với Chúng Tôi</h5>
+          <p>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a><br>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a><br>
+            <a href="#"><i class="fab fa-youtube"></i> YouTube</a><br>
+            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Thế Giới Di Động Clone. Bản quyền thuộc về Công ty TNHH Thế Giới Di Động.</p>
+      </div>
+    </div>
+  </footer>
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Dữ liệu sản phẩm
+    const products = [
+      {
+        id: 1,
+        name: 'iPhone 15 Pro Max 256GB',
+        image: 'https://via.placeholder.com/250x250?text=iPhone+15+Pro',
+        price: 28900000,
+        originalPrice: 32900000,
+        rating: 5,
+        badge: 'Bán Chạy'   
+      },
+      {
+        id: 2,
+        name: 'Samsung Galaxy S24 Ultra',
+        image: 'https://via.placeholder.com/250x250?text=Galaxy+S24',
+        price: 26990000,
+        originalPrice: 29990000,
+        rating: 4.5,
+        badge: 'Hot'
+      },
+      {
+        id: 3,
+        name: 'MacBook Pro 14 inch M3',
+        image: 'https://via.placeholder.com/250x250?text=MacBook+Pro',
+        price: 34900000,
+        originalPrice: 39900000,
+        rating: 5,
+        badge: 'Mới'
+      },
+      {
+        id: 4,
+        name: 'iPad Pro 12.9 M2',
+        image: 'https://via.placeholder.com/250x250?text=iPad+Pro',
+        price: 18900000,
+        originalPrice: 21900000,
+        rating: 4.8,
+        badge: 'Sale'
+      },
+      {
+        id: 5,
+        name: 'Apple Watch Series 9',
+        image: 'https://via.placeholder.com/250x250?text=Apple+Watch',
+        price: 10990000,
+        originalPrice: 12990000,
+        rating: 4.7,
+        badge: 'Tiết Kiệm'
+      },
+      {
+        id: 6,
+        name: 'Sony WH-1000XM5',
+        image: 'https://via.placeholder.com/250x250?text=Headphone',
+        price: 8990000,
+        originalPrice: 10990000,
+        rating: 4.9,
+        badge: 'Deal'
+      }
+    ];
+
+    // Hàm render sản phẩm
+    function renderProducts(products, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = products.map(product => {
+        const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+        return `
+          <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <div class="product-card">
+              <div style="position: relative;">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <span class="product-badge">${product.badge}</span>
+              </div>
+              <div class="product-info">
+                <p class="product-name">${product.name}</p>
+                <div class="product-price">
+                  <span class="price-current">${product.price.toLocaleString('vi-VN')}₫</span>
+                  <span class="discount-percent">-${discount}%</span>
+                </div>
+                <p class="price-old">${product.originalPrice.toLocaleString('vi-VN')}₫</p>
+                <div class="product-rating">
+                  <span class="stars">${'⭐'.repeat(Math.floor(product.rating))}</span>
+                  <span>(${product.rating})</span>
+                </div>
+                <button class="product-btn">
+                  <i class="fas fa-shopping-cart"></i> Thêm vào giỏ
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render sản phẩm bán chạy
+    renderProducts(products, 'productContainer');
+
+    // Render flash sale (cùng sản phẩm với giá khác)
+    const flashSaleProducts = products.map(p => ({
+      ...p,
+      price: Math.floor(p.price * 0.85),
+      badge: '⚡ Flash'
+    }));
+    renderProducts(flashSaleProducts, 'flashSaleContainer');
+
+    // Thêm sự kiện cho nút "Thêm vào giỏ"
+    document.addEventListener('DOMContentLoaded', () => {
+      const addToCartButtons = document.querySelectorAll('.product-btn');
+      addToCartButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('Sản phẩm đã được thêm vào giỏ hàng! 🛒');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
